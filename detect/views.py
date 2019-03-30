@@ -1,6 +1,10 @@
 from django.shortcuts import render
 
 
-def test(re):
+
+def index(request):
+    return render(request, 'index.html')
     pass
-# Create your views here.
+
+def detect(request):
+    pass
