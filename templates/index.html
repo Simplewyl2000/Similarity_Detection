@@ -1,144 +1,109 @@
-{% extends "base-nav.html" %}
+<!DOCTYPE html>
 {% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Similarty_Detect</title>
+    <script src="{% static "js/three.min83.js" %}"></script>
+    <script src="{% static "js/stats.js" %}"></script>
+    <script src="{% static "js/Tween.js" %}"></script>
+    <style type="text/css">
+        div#canvas-frame {
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            height: 600px;
+            background-color: #EEEEEE;
+        }
 
-{#{% block meta_keywords %}上热门,开直播,互粉,刷播放{% endblock %}#}
-{#{% block meta_description %}无需任何软件，你只需要一个浏览器！就可以刷GIF快手的播放量，上热门无压力！{% endblock %}#}
+    </style>
+    <script>
+        var renderer;
+        function initThree() {
+            width = document.getElementById('canvas-frame').clientWidth;
+            height = document.getElementById('canvas-frame').clientHeight;
+            renderer = new THREE.WebGLRenderer({
+                antialias : true
+            });
+            renderer.setSize(width, height);
+            document.getElementById('canvas-frame').appendChild(renderer.domElement);
+            renderer.setClearColor(0xFFFFFF, 1.0);
 
+            stats = new Stats();
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.left = '0px';
+            stats.domElement.style.top = '0px';
+            document.getElementById('canvas-frame').appendChild(stats.domElement);
+        }
 
-{% block refresh %}{% endblock %}
-{% block refresh_script %}{% endblock %}
-{% block title %}快手网红联盟{% endblock %}
-{% block _content %}
-    <header class='ksht-header'>
-        <h1 class="ksht-title">首页</h1>
-        <p class='ksht-sub-title'></p>
+        var camera;
+        function initCamera() {
+            camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+            camera.position.x = 0;
+            camera.position.y = 0;
+            camera.position.z = 600;
+            camera.up.x = 0;
+            camera.up.y = 1;
+            camera.up.z = 0;
+            camera.lookAt({
+                x : 0,
+                y : 0,
+                z : 0
+            });
+        }
 
-    </header>
-    <div class="weui-grids">
-        <a href="{% url "photo:bofan" %}" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <i class="iconfont">&#xe679;</i>
-            </div>
-            <p class="weui-grid__label">
-                刷浏览量
-            </p>
-        </a>
-        <a href="{% url "order:placeorder" %}" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <i class="iconfont">&#xe65a;</i>
-            </div>
-            <p class="weui-grid__label">
-                云端刷量
-            </p>
-        </a>
-        <a href="{% url "photo:list" %}" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <i class="iconfont">&#xe626;</i>
-            </div>
-            <p class="weui-grid__label">
-                互推大厅
-            </p>
-        </a>
-        <a href="{% url "photo:download" %}" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <i class="iconfont">&#xe62a;</i>
-            </div>
-            <p class="weui-grid__label">
-                无水印下载
-            </p>
-        </a>
-        <a href="http://ksh.99ksh.com" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <i class="iconfont">&#xe60b;</i>
-            </div>
-            <p class="weui-grid__label">
-                交易平台
-            </p>
-        </a>
+        var scene;
+        function initScene() {
+            scene = new THREE.Scene();
+        }
 
-        <a href="{% url "user:tguser" %}" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <i class="iconfont">&#xe626;</i>
-            </div>
-            <p class="weui-grid__label">
-                互粉链接
-            </p>
-        </a>
-        <a href="{% url "user:tg" %}" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <i class="iconfont">&#xe60b;</i>
-            </div>
-            <p class="weui-grid__label">
-                关注送积分
-            </p>
-        </a>
+        var light;
+        function initLight() {
+            light = new THREE.AmbientLight(0xFF0000);
+            light.position.set(100, 100, 200);
+            scene.add(light);
+            light = new THREE.PointLight(0x00FF00);
+            light.position.set(0, 0,300);
+            scene.add(light);
+        }
 
+        var cube;
+        var mesh;
+        function initObject() {
+            var geometry = new THREE.CylinderGeometry( 100,150,400);
+            var material = new THREE.MeshLambertMaterial( { color:0xFFFFFF} );
+            mesh = new THREE.Mesh( geometry,material);
+            mesh.position = new THREE.Vector3(0,0,0);
+            scene.add(mesh);
+        }
 
-        <a href="{% url "home:help" %}" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <i class="iconfont">&#xe661;</i>
-            </div>
-            <p class="weui-grid__label">
-                使用帮助
-            </p>
-        </a>
-        <a href="{% url "kslogin" %}" class="weui-grid js_grid">
-                <div class="weui-grid__icon">
-                    <i class="iconfont">&#xe659;</i>
-                </div>
-                <p class="weui-grid__label">
-                    切换账号
-                </p>
-            </a>
-        {% if  request.is_appuser %}
-            {#            <a href="{% url "live:rq" %}" class="weui-grid js_grid">#}
-            {#                <div class="weui-grid__icon">#}
-            {#                    <i class="iconfont">&#xe6bf;</i>#}
-            {#                </div>#}
-            {#                <p class="weui-grid__label">#}
-            {#                    直播间人气#}
-            {#                </p>#}
-            {#            </a>#}
+        function initTween() {
+            new TWEEN.Tween( mesh.position)
+                    .to( { x: -400 }, 3000 ).repeat( Infinity ).start();
+        }
 
-        {% else %}
-            <a href="http://ksht.oss-cn-hangzhou.aliyuncs.com/download/ksht.apk" class="weui-grid js_grid">
-                <div class="weui-grid__icon">
-                    <i class="iconfont">&#xe62a;</i>
-                </div>
-                <p class="weui-grid__label">
-                    下载APP，更方便
-                </p>
-            </a>
-        {% endif %}
-    </div>
-{#    老铁们！我们诚邀你们跟我们平台一起成长，你们需要什么我们就往你们需要的方面发展，一起体验快手带给我们的乐趣！更多福利加Q群:635342337#}
-{#    <a target="_blank"#}
-{#       href="//shang.qq.com/wpa/qunwpa?idkey=8d7924ba3c005b7d8a165904eafb97d4456b04cb682e0a44348078415d1badf4"><img#}
-{#            border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="快手网红联盟" title="快手网红联盟"></a>#}
+        function threeStart() {
+            initThree();
+            initCamera();
+            initScene();
+            initLight();
+            initObject();
+            initTween();
+            animation();
 
+        }
+        function animation()
+        {
+            renderer.render(scene, camera);
+            requestAnimationFrame(animation);
+            stats.update();
+            TWEEN.update();
+        }
 
+    </script>
+</head>
 
-{% endblock %}
-
-{% block script %}
-    {% if request.is_appuser %}
-        <script>
-            apiready = function () {
-                $(function () {
-                    $("#liverq").click(function () {
-                        alert(api.appVersion);
-                    })
-                })
-            };
-
-
-        </script>
-    {% endif %}
-
-    {#    {% if request.is_dbuser %}#}
-    {#        <script>#}
-    {#            dbts();#}
-    {#        </script>#}
-    {#    {% endif %}#}
-
-{% endblock %}
+<body onload="threeStart();">
+    <div id="canvas-frame"></div>
+</body>
+</html>
