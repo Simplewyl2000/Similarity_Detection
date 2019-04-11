@@ -24,6 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', detect_views.index),
     path('detect/', detect_views.detect),
+    path('main/', detect_views.main),
+    path('example/', detect_views.example),
+    path('realtime/', detect_views.realtime),
 ]
 
 
