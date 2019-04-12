@@ -20,7 +20,7 @@ def realtime(request):
         {"type": 'Binary', "filename": "F2", "algorithm": "A2", "result": "R2", "time": "T2"}]
         }
     if request.method == "GET":
-        page = request.GET.get('page')
-        limit = request.GET.get('limit')
-        print(page,limit)
         return JsonResponse(ResData)
+
+def DetectConfig(request):
+    return render(request, 'DetectConfig.html')

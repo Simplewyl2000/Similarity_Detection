@@ -20,13 +20,14 @@ from detect import views as detect_views
 
 
 urlpatterns = [
-    path('', detect_views.index),
+    path('', detect_views.main),
     path('admin/', admin.site.urls),
     path('index/', detect_views.index),
     path('detect/', detect_views.detect),
     path('main/', detect_views.main),
     path('example/', detect_views.example),
     path('realtime/', detect_views.realtime),
+    path('DetectConfig/', detect_views.DetectConfig),
 ]
 
 
