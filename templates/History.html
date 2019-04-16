@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %}检测配置界面{% endblock %}
+
+{% block body %}
+    <br>
+    <form class="layui-form layui-form-pane" action="/HistorySelect/" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">查询模式</label>
+            <div class="layui-input-inline">
+                <select id="select_model" name="select_mod" lay-filter="select_model">
+                    <option value="">请选择查询模式</option>
+                    <option value="accurate">精准案例模式</option>
+                    <option value="global">全局范围模式</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">案例名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="select_title" placeholder="待查询的案例名称：不能有特殊字符、首尾不能出现下划线、不能全为数字"
+                       autocomplete="off" class="layui-input" id="select_savefile">
+            </div>
+        </div>
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">查询类别</label>
+            <div id="select_type" class="layui-input-block">
+                <input type="radio" id="select_type" name="select_type" value="APK" title="APK" checked>
+                <input type="radio" id="select_type" name="select_type" value="Binary" title="Binary">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">相似程度</label>
+            <div class="layui-input-inline">
+                <input type="text" id="similar_degree" name="similar_degree" placeholder="相似程度" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">查询范围</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="statime" name="start_time" placeholder="开始时间" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid">-</div>
+                <div class="layui-input-inline">
+                    <input type="text" id="endtime" name="end_time" placeholder="结束时间" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="detect_config" id="submit">查询</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script>
+        layui.use(['form','layer','jquery','laydate'], function(){
+            var form = layui.form
+            ,layer = layui.layer
+            ,laydate = layui.laydate
+            ,$ = layui.jquery;
+
+
+            form.verify({
+                detect_name: function (value, item) { //value：表单的值、item：表单的DOM对象
+                    return verify_detect_name(value)
+                }
+            });
+            form.on('select(select_model)', function(data){
+                if (data.value == 'accurate') {
+                    SetDisableAttr($,'submit',0,0);
+                    SetDisableAttr($,'select_savefile',0,0);
+                    SetDisableAttr($,'select_type',0,1);
+                    SetDisableAttr($,'similar_degree',0,1);
+                    SetDisableAttr($,'statime',0,1);
+                    SetDisableAttr($,'endtime',0,1);
+                    form.render()
+                }
+                if (data.value == 'global') {
+                    SetDisableAttr($,'submit',1,0);
+                    SetDisableAttr($,'select_savefile',0,1);
+                    SetDisableAttr($,'select_type',0,0);
+                    SetDisableAttr($,'similar_degree',0,0);
+                    SetDisableAttr($,'statime',0,0);
+                    SetDisableAttr($,'endtime',0,0);
+                    form.render()
+                }
+            });
+            //监听提交
+            form.on('submit(detect_config)', function(data){
+
+            });
+
+            laydate.render({
+                elem: '#statime' //指定元素
+            });
+            laydate.render({
+                elem: '#endtime' //指定元素
+            });
+        });
+        function verify_detect_name(value) {
+            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                return '检测名不能有特殊字符';
+            }
+            if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                return '检测名首尾不能出现下划线\'_\'';
+            }
+            if (/^\d+\d*\d*$/.test(value)) {
+                return '检测名不能全为数字';
+            }
+            return '检测名不能为空';
+        }
+        function mod_select() {
+            if ($('#select_model').val() == '0') {
+                $('.submit').addClass('layui-btn-disabled').attr('disabled',"true");
+
+            }
+        }
+        function SetDisableAttr($,id,IsBtn,IsAdd) {
+            var AddClass;
+            if (IsBtn) {
+                AddClass = "layui-btn-disabled";
+            }
+            else {
+                AddClass = "layui-disabled";
+            }
+            {#ture#}
+            if (IsAdd) {
+                $('#' + id).attr("disabled",true);
+                $('#' + id).addClass(AddClass);
+            }
+            else {
+                $('#' + id).attr("disabled",false);
+                $('#' + id).removeClass(AddClass);
+            }
+        }
+    </script>
+{% endblock %}

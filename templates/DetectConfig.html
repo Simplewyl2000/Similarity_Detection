@@ -3,8 +3,161 @@
 {% block title %}检测配置界面{% endblock %}
 
 {% block body %}
-
+    <br>
+    <form class="layui-form layui-form-pane" action="/DetectConfigSet/" method="get">
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">检测命名</label>
+            <div class="layui-input-block">
+                <input type="text" name="detect_title" required  lay-verify="required|detect_name"
+                       placeholder="为检测案例命名、与数据库匹配是否重名：不能有特殊字符、首尾不能出现下划线、不能全为数字"
+                       autocomplete="off" class="layui-input" id="detect_savefile">
+            </div>
+        </div>
+{#        <div class="layui-form-item">#}
+{#            <label class="layui-form-label">密码框</label>#}
+{#            <div class="layui-input-inline">#}
+{#                <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">#}
+{#            </div>#}
+{#            <div class="layui-form-mid layui-word-aux">辅助文字</div>#}
+{#        </div>#}
+{#        <div class="layui-form-item">#}
+{#            <label class="layui-form-label">选择框</label>#}
+{#            <div class="layui-input-inline">#}
+{#                <select name="city" lay-verify="required">#}
+{#                    <option value=""></option>#}
+{#                    <option value="0">北京</option>#}
+{#                    <option value="1">上海</option>#}
+{#                    <option value="2">广州</option>#}
+{#                    <option value="3">深圳</option>#}
+{#                    <option value="4">杭州</option>#}
+{#                </select>#}
+{#            </div>#}
+{#        </div>#}
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">特征配置</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="feature[1]" title="特征1" checked>
+                <input type="checkbox" name="feature[2]" title="特征2" checked>
+                <input type="checkbox" name="feature[3]" title="特征3" checked>
+            </div>
+        </div>
+{#        <div class="layui-form-item">#}
+{#            <label class="layui-form-label">开关</label>#}
+{#            <div class="layui-input-block">#}
+{#                <input type="checkbox" name="switch" lay-skin="switch">#}
+{#            </div>#}
+{#        </div>#}
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">检测类别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="detect_type" value="APK" title="APK" checked>
+                <input type="radio" name="detect_type" value="Binary" title="Binary">
+            </div>
+        </div>
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">检测算法</label>
+            <div class="layui-input-block">
+                <input type="radio" name="detect_alg" value="alg1" title="算法1" checked>
+                <input type="radio" name="detect_alg" value="alg2" title="算法2">
+            </div>
+        </div>
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">检测文件</label>
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn " id="detect_file">
+                    <i class="layui-icon">&#xe67c;</i>上传文件
+                </button>
+            </div>
+        </div>
+{#        <div class="layui-form-item layui-form-text">#}
+{#            <label class="layui-form-label">文本域</label>#}
+{#            <div class="layui-input-block">#}
+{#                <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>#}
+{#            </div>#}
+{#        </div>#}
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="detect_config" id="submit">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
 {% endblock %}
 
 {% block script %}
+    <script>
+        layui.use(['upload','form','layer','jquery'], function(){
+            var form = layui.form
+            ,upload = layui.upload
+            ,layer = layui.layer
+            ,$ = layui.jquery;
+
+
+            form.verify({
+                detect_name: function (value, item) { //value：表单的值、item：表单的DOM对象
+                    return verify_detect_name(value)
+                }
+            });
+            //监听提交
+            form.on('submit(detect_config)', function(data){
+                if (!data.field.file) {
+                    layer.msg('未选择检测文件', {icon: 5,anim: 6});
+                    return false;
+                }
+                else {
+                }
+            });
+
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#detect_file' //绑定元素
+                ,url: '/DetectConfigSet/' //上传接口
+                ,auto: false //选择文件后不自动上传
+                ,bindAction: '#submit' //指向一个按钮触发上传
+                ,accept: 'file' //允许上传的文件类型
+                ,size: 10240 // KB
+                ,before: function(obj){
+                    this.data={'FileSavePath':$('#detect_savefile').val()};//关键代码
+                    layer.load(1);
+                }
+                ,done: function(res, index, upload){
+                    if (!res.code) {
+                        layer.closeAll('loading'); //关闭loading
+                        layer.msg('上传成功',{icon: 1});
+                    }
+                    else if (res.code == 1) {
+                        layer.closeAll('loading'); //关闭loading
+                        layer.msg('检测名不能有特殊字符',{icon: 5,anim: 6});
+                    }
+                    else if (res.code == 2) {
+                        layer.closeAll('loading'); //关闭loading
+                        layer.msg('检测名首尾不能出现下划线\'_\'',{icon: 5,anim: 6});
+                    }
+                    else if (res.code == 3) {
+                        layer.closeAll('loading'); //关闭loading
+                        layer.msg('检测名不能全为数字',{icon: 5,anim: 6});
+                    }
+                    else if (res.code == 4) {
+                        layer.closeAll('loading'); //关闭loading
+                        layer.msg('检测名不能为空',{icon: 5,anim: 6});
+                    }
+                }
+                ,error: function(index, upload){
+                    //请求异常回调
+                    layer.closeAll('loading'); //关闭loading
+                }
+            });
+        });
+        function verify_detect_name(value) {
+            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                return '检测名不能有特殊字符';
+            }
+            if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                return '检测名首尾不能出现下划线\'_\'';
+            }
+            if (/^\d+\d*\d*$/.test(value)) {
+                return '检测名不能全为数字';
+            }
+        }
+    </script>
 {% endblock %}

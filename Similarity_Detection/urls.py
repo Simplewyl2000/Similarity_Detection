@@ -28,6 +28,9 @@ urlpatterns = [
     path('example/', detect_views.example),
     path('realtime/', detect_views.realtime),
     path('DetectConfig/', detect_views.DetectConfig),
+    path('DetectConfigSet/', detect_views.DetectConfigSet),
+    path('History/', detect_views.History),
+    path('HistorySelect/', detect_views.HistorySelect),
 ]
 
 
