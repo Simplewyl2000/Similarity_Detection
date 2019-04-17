@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}检测配置界面{% endblock %}
+{% block title %}历史查询界面{% endblock %}
 
 {% block body %}
     <br>
@@ -8,7 +8,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">查询模式</label>
             <div class="layui-input-inline">
-                <select id="select_model" name="select_mod" lay-filter="select_model">
+                <select id="select_model" name="select_mod" lay-filter="select_model" lay-verify="required">
                     <option value="">请选择查询模式</option>
                     <option value="accurate">精准案例模式</option>
                     <option value="global">全局范围模式</option>
@@ -67,6 +67,7 @@
             ,$ = layui.jquery;
 
 
+
             form.verify({
                 detect_name: function (value, item) { //value：表单的值、item：表单的DOM对象
                     return verify_detect_name(value)
@@ -80,6 +81,12 @@
                     SetDisableAttr($,'similar_degree',0,1);
                     SetDisableAttr($,'statime',0,1);
                     SetDisableAttr($,'endtime',0,1);
+
+                    DetectFileVerify($,'select_savefile',1,1);
+                    DetectFileVerify($,'similar_degree',0,0);
+                    DetectFileVerify($,'statime',0,0);
+                    DetectFileVerify($,'endtime',0,0);
+
                     form.render()
                 }
                 if (data.value == 'global') {
@@ -89,6 +96,11 @@
                     SetDisableAttr($,'similar_degree',0,0);
                     SetDisableAttr($,'statime',0,0);
                     SetDisableAttr($,'endtime',0,0);
+
+                    DetectFileVerify($,'select_savefile',1,0);
+                    DetectFileVerify($,'similar_degree',0,1);
+                    DetectFileVerify($,'statime',0,1);
+                    DetectFileVerify($,'endtime',0,1);
                     form.render()
                 }
             });
@@ -114,14 +126,8 @@
             if (/^\d+\d*\d*$/.test(value)) {
                 return '检测名不能全为数字';
             }
-            return '检测名不能为空';
         }
-        function mod_select() {
-            if ($('#select_model').val() == '0') {
-                $('.submit').addClass('layui-btn-disabled').attr('disabled',"true");
 
-            }
-        }
         function SetDisableAttr($,id,IsBtn,IsAdd) {
             var AddClass;
             if (IsBtn) {
@@ -138,6 +144,22 @@
             else {
                 $('#' + id).attr("disabled",false);
                 $('#' + id).removeClass(AddClass);
+            }
+        }
+        function DetectFileVerify($,id,IsName,IsVerify) {
+            var SetAttr;
+            if (IsName) {
+                SetAttr = "required|detect_name";
+            }
+            else {
+                SetAttr = "required";
+            }
+            if (IsVerify) {
+                $('#' + id).attr("lay-verify",SetAttr);
+                console.log('#' + id + SetAttr)
+            }
+            else {
+                $('#' + id).attr("lay-verify","");
             }
         }
     </script>
