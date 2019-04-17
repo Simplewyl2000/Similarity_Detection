@@ -1,2 +1,48 @@
+
+要用python3的绝对路径
 python manage.py makemigrations
 python manage.py migrate
+
+一、Django数据同步过程中遇到的问题：
+
+1、raise ImproperlyConfigured('mysqlclient 1.3.13 or newer is required; you have %s.' % Database.__version__)
+
+　　　django.core.exceptions.ImproperlyConfigured: mysqlclient 1.3.13 or newer is required; you have 0.9.3.
+
+　　解决办法：C:\Python37\Lib\site-packages\django\db\backends\mysql（python安装目录）打开base.py，注释掉以下内容：
+
+ 　　　　　　　if version < (1, 3, 13):
+
+　　　　　　　　　　raise ImproperlyConfigured('mysqlclient 1.3.13 or newer is required; you have %s.' % Database.__version__)
+
+　　
+
+2、File "C:\Python37\lib\site-packages\django\db\backends\mysql\operations.py", line 146, in last_executed_query
+
+　　  query = query.decode(errors='replace')
+
+　　AttributeError: 'str' object has no attribute 'decode'
+
+解决办法：打开此文件把146行的decode修改为encode
+
+
+---五月底
+
+4.18-5.15
+
+
+除首页外其余页面针对单个检测文件动态变化：
+
+2   【江帅】首页：系统介绍（核心特点：效率高、可用性高）、数据统计、实验对比图、关于我们【静态内容】
+
+1   【冯冠云】开始检测、实时检测结果、历史查询：参数配置、单个检测/批量检测、动画展示中间结果、新页面展示（相似度、整体CFG/函数CFG【节点图、直观、有对比性、CFG相似文件相似、CFG不相似但文件相似】、比对整个样本库...）
+
+1   【侍言】函数嵌入编码：特征压缩原理，针对单个文件展示嵌入过程，原始节点----->200固定
+
+1   【无与伦】张量奇异值分解：分解过程图、针对最近测试的文件分解结果、整个样本库张量分解效果（降维、效率、容量200-->100/50，准确率）、得到特征向量、60维分布，每一个维度有范围，连接每个案例所在维度的值的连线
+
+2   【江帅】APK第三方函数剔除：样本库嵌入之后的分布、聚类算法结果图
+
+1   【朱正禹】张量动态更新：动态更新过程图、展示原始特征向量与更新之后的特征向量、静态更新与动态对比
+
+1   【江帅】样本库分析：样本数量、CFG各个特征的统计特性（函数个数...）

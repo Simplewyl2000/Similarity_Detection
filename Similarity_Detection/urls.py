@@ -31,6 +31,7 @@ urlpatterns = [
     path('DetectConfigSet/', detect_views.DetectConfigSet),
     path('History/', detect_views.History),
     path('HistorySelect/', detect_views.HistorySelect),
+    path('DetectResult/', detect_views.DetectResult),
 ]
 
 

@@ -37,15 +37,23 @@
             <div class="layui-form-mid layui-word-aux"></div>
         </div>
 
+{#        <div class="layui-form-item">#}
+{#            <div class="layui-inline">#}
+{#                <label class="layui-form-label">查询范围</label>#}
+{#                <div class="layui-input-inline">#}
+{#                    <input type="text" id="statime" name="start_time" placeholder="开始时间" autocomplete="off" class="layui-input">#}
+{#                </div>#}
+{#                <div class="layui-form-mid">-</div>#}
+{#                <div class="layui-input-inline">#}
+{#                    <input type="text" id="endtime" name="end_time" placeholder="结束时间" autocomplete="off" class="layui-input">#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">查询范围</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="statime" name="start_time" placeholder="开始时间" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid">-</div>
-                <div class="layui-input-inline">
-                    <input type="text" id="endtime" name="end_time" placeholder="结束时间" autocomplete="off" class="layui-input">
+                    <input type="text" class="layui-input" id="Between_time" name="Between_time" placeholder=" - ">
                 </div>
             </div>
         </div>
@@ -79,13 +87,13 @@
                     SetDisableAttr($,'select_savefile',0,0);
                     SetDisableAttr($,'select_type',0,1);
                     SetDisableAttr($,'similar_degree',0,1);
-                    SetDisableAttr($,'statime',0,1);
-                    SetDisableAttr($,'endtime',0,1);
+                    SetDisableAttr($,'Between_time',0,1);
+
 
                     DetectFileVerify($,'select_savefile',1,1);
                     DetectFileVerify($,'similar_degree',0,0);
-                    DetectFileVerify($,'statime',0,0);
-                    DetectFileVerify($,'endtime',0,0);
+                    DetectFileVerify($,'Between_time',0,0);
+
 
                     form.render()
                 }
@@ -94,13 +102,13 @@
                     SetDisableAttr($,'select_savefile',0,1);
                     SetDisableAttr($,'select_type',0,0);
                     SetDisableAttr($,'similar_degree',0,0);
-                    SetDisableAttr($,'statime',0,0);
-                    SetDisableAttr($,'endtime',0,0);
+                    SetDisableAttr($,'Between_time',0,0);
+
 
                     DetectFileVerify($,'select_savefile',1,0);
                     DetectFileVerify($,'similar_degree',0,1);
-                    DetectFileVerify($,'statime',0,1);
-                    DetectFileVerify($,'endtime',0,1);
+                    DetectFileVerify($,'Between_time',0,1);
+
                     form.render()
                 }
             });
@@ -110,7 +118,8 @@
             });
 
             laydate.render({
-                elem: '#statime' //指定元素
+                elem: '#Between_time' //指定元素
+                ,range: true
             });
             laydate.render({
                 elem: '#endtime' //指定元素

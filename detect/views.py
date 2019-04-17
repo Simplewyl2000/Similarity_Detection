@@ -75,3 +75,6 @@ def HistorySelect(request):
         ResData = {"code": 0}
         print(request.POST)
         return JsonResponse(ResData)
+    
+def DetectResult(request):
+    return render(request, 'DetectResult.html')
