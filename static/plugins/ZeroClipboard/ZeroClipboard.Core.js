@@ -1700,7 +1700,7 @@
     return typeof zIndex === "number" ? zIndex : "auto";
   };
   /**
- * Attempt to detect if ZeroClipboard is executing inside of a sandboxed iframe.
+ * Attempt to DetectResultHistory if ZeroClipboard is executing inside of a sandboxed iframe.
  * If it is, Flash Player cannot be used, so ZeroClipboard is dead in the water.
  *
  * @see {@link http://lists.w3.org/Archives/Public/public-whatwg-archive/2014Dec/0002.html}

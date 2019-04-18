@@ -1,0 +1,10 @@
+
+要用python3的绝对路径：C:\Users\BoYoung_J\AppData\Local\Programs\Python\Python36\python.exe
+
+#创建一个新的模块app
+python manage.py startapp app_name
+各模块可以有自己的template和static文件夹
+
+#将app中model定义的数据表格在数据库中生成
+python manage.py makemigrations
+python manage.py migrate

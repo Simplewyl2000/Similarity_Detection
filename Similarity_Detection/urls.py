@@ -15,23 +15,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from detect import views as detect_views
+from Main import views
 
 
 
+# 总路由设置，此处均为一级目录
 urlpatterns = [
-    path('', detect_views.main),
+
+
     path('admin/', admin.site.urls),
-    path('index/', detect_views.index),
-    path('detect/', detect_views.detect),
-    path('main/', detect_views.main),
-    path('example/', detect_views.example),
-    path('realtime/', detect_views.realtime),
-    path('DetectConfig/', detect_views.DetectConfig),
-    path('DetectConfigSet/', detect_views.DetectConfigSet),
-    path('History/', detect_views.History),
-    path('HistorySelect/', detect_views.HistorySelect),
-    path('DetectResult/', detect_views.DetectResult),
+
+    path('',views.main),
+    path('main/',include('Main.urls')),
+    path('DetectResultHistory/',include('DetectResultHistory.urls')),
+    path('FuncEmbedCode/', include('FuncEmbedCode.urls')),
+    path('SampleBaseAnalysis/', include('SampleBaseAnalysis.urls')),
+    path('TensorDecompositionSV/', include('TensorDecompositionSV.urls')),
+    path('TensorDynamicUpdate/', include('TensorDynamicUpdate.urls')),
+    path('ThirdPartyFuncAnalysis/', include('ThirdPartyFuncAnalysis.urls')),
+
+
 ]
 
 

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}首页{% endblock %}
+
+{% block body %}
+    <table class="layui-hide" id="main" lay-filter="main"></table>
+
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        </div>
+    </script>
+
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="jump">跳转</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+{% endblock %}
+{% block script %}
+    <script>
+        layui.use('table', function(){
+            var table = layui.table;
+
+            //第一个实例
+            table.render({
+                elem: '#main'
+                ,cellMinWidth: 80
+                ,toolbar: '#toolbarDemo'
+                ,title: '实时相似性检测结果表'
+                ,url: '/main/realtime/' //数据接口
+                ,id: 'idTest'
+                ,page: {
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    //,curr: 5 //设定初始在第 5 页
+                    ,groups: 1 //只显示 1 个连续页码
+                    ,first: false //不显示首页
+                    ,last: false //不显示尾页
+                } //开启分页
+                ,cols: [[ //表头
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field: 'type', title: '检测类型', fixed: 'left', align: 'center'}
+                    ,{field: 'filename', title: '检测文件', fixed: 'left', align: 'center'}
+                    ,{field: 'algorithm', title: '检测算法', fixed: 'left', align: 'center'}
+                    ,{field: 'result', title: '检测结果', fixed: 'left', align: 'center'}
+                    ,{field: 'time', title: '检测时间', fixed: 'left', sort: true, align: 'center'}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
+                    ]]
+                });
+            //头工具栏事件
+            table.on('toolbar(main)', function(obj){
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch(obj.event){
+                    case 'getCheckData':
+                        var data = checkStatus.data;
+                        layer.alert(JSON.stringify(data));
+                    break;
+                };
+            });
+
+            //监听行工具事件
+            table.on('tool(main)', function(obj){
+                //console.log(obj)
+                if(obj.event === 'del'){
+                    layer.confirm('真的删除行么', function(index){
+                        obj.del();
+                        layer.close(index);
+                    });
+                }
+
+                if(obj.event === 'jump'){
+                    layer.confirm('进入检测结果页面、暂无该功能', function(index){
+                        layer.close(index);
+                    });
+                }
+
+            });
+        });
+    </script>
+{% endblock %}

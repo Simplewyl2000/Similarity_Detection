@@ -2897,7 +2897,7 @@ Manager.prototype = {
     /**
      * run the recognizers!
      * called by the inputHandler function on every movement of the pointers (touches)
-     * it walks through all the recognizers and tries to detect the gesture that is being made
+     * it walks through all the recognizers and tries to DetectResultHistory the gesture that is being made
      * @param {Object} inputData
      */
     recognize: function(inputData) {

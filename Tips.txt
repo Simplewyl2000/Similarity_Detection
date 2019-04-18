@@ -46,3 +46,43 @@ python manage.py migrate
 1   【朱正禹】张量动态更新：动态更新过程图、展示原始特征向量与更新之后的特征向量、静态更新与动态对比
 
 1   【江帅】样本库分析：样本数量、CFG各个特征的统计特性（函数个数...）
+
+
+【django中查找Templates】
+
+Django按照 INSTALLED_APPS中添加的顺序查找Templates
+
+不同的APP下Templates目录中的同名.html文件会造成冲突
+
+所以在template下新建html文件的时候，需要再建立一层目录，目录的名称是该app的名称，防止冲突的发生
+
+
+【每个APP下都有自己的static文件夹，那如何设置将不会混用呢】
+
+以下是实例（我项目里有两个APP（login 和main））
+
+1、首先在setting 文件修改配置路径
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "MGStudio", "static"),
+    os.path.join(BASE_DIR, "main", "static"),
+    os.path.join(BASE_DIR, "login", "static"),
+]
+
+2、在每个APP下的static下建立以APP名相同的文件夹
+
+比如我在login/static/login/
+
+放入样式JS CSS等
+
+3、如何调用样式
+
+{% static 'main/img/firefox-logo-small.jpg' %}
+
+{% static 'login/img/name.png' %}
+
+
+【多个app的url设置】
+
+先单独设置每个app的url，再设置总的url，导入include

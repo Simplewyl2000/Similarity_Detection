@@ -1512,7 +1512,7 @@ Sizzle.uniqueSort = function( results ) {
 		j = 0,
 		i = 0;
 
-	// Unless we *know* we can detect duplicates, assume their presence
+	// Unless we *know* we can DetectResultHistory duplicates, assume their presence
 	hasDuplicate = !support.detectDuplicates;
 	sortInput = !support.sortStable && results.slice( 0 );
 	results.sort( sortOrder );

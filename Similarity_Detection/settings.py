@@ -10,10 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
-import os
+import os,sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+#新加下边一样操作指定app所在文件夹的位置：
+sys.path.insert(0, os.path.join(BASE_DIR, 'DetectResultHistory'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'FuncEmbedCode'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'SampleBaseAnalysis'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'TensorDecompositionSV'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'TensorDynamicUpdate'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'ThirdPartyFuncAnalysis'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'Main'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -37,7 +46,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'detect.apps.DetectConfig',
+    'DetectResultHistory',
+    'FuncEmbedCode',
+    'SampleBaseAnalysis',
+    'TensorDecompositionSV',
+    'TensorDynamicUpdate',
+    'ThirdPartyFuncAnalysis',
+    'Main',
+
 ]
 
 MIDDLEWARE = [
@@ -140,6 +156,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'/static/').replace('\\','/')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, 'DetectResultHistory', "static"),
+    os.path.join(BASE_DIR, 'FuncEmbedCode',"static"),
+    os.path.join(BASE_DIR, 'SampleBaseAnalysis',"static"),
+    os.path.join(BASE_DIR, 'TensorDecompositionSV',"static"),
+    os.path.join(BASE_DIR, 'TensorDynamicUpdate',"static"),
+    os.path.join(BASE_DIR, 'ThirdPartyFuncAnalysis',"static"),
+    os.path.join(BASE_DIR, 'Main',"static")
 )
 
 
