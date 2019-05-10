@@ -5,7 +5,7 @@ from ThirdPartyFuncAnalysis import views
 
 urlpatterns = [
 
-    path('', views.todo),
+    path('', views.main),
 
 
 ]

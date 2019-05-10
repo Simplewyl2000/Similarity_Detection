@@ -1,0 +1,7 @@
+function embedding /demos/disassembler_analysis.py  输入APK  输出函数嵌入
+ 
+去除重复函数，可以用numpy的矩阵操作  输入函数嵌入  输出去重结果
+
+第三方函数过滤  输入函数嵌入 输出过滤结果
+
+最后根据binary将处理后的函数嵌入存放数据库

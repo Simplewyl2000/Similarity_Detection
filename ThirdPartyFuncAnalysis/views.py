@@ -1,5 +1,5 @@
 from django.shortcuts import render
 
 # Create your views here.
-def todo(request):
-    pass
+def main(request):
+    return render(request,'ThirdPartyFuncAnalysis/main.html')

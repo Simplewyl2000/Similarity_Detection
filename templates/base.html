@@ -28,26 +28,29 @@
                 <dd><a href="https://docs.qq.com/sheet/DWE1EYnVkWnpMV25Z" target="_blank">工作安排</a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item"><a href="https://www.layui.com/" target="_blank">张量分解</a></li>
         <li class="layui-nav-item">
-        <a href="javascript:;">样本库分析</a>
+        <a href="javascript:;">系统模块</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                <dd><a href="https://docs.qq.com/doc/DWHJJWXVmZEpDeW9R" target="_blank">第三方函数检测</a></dd>
-                <dd><a href="https://docs.qq.com/doc/DWHJJWXVmZEpDeW9R" target="_blank">增量特征更新</a></dd>
-                <dd><a href="https://docs.qq.com/sheet/DWE1EYnVkWnpMV25Z" target="_blank">...</a></dd>
+                <dd><a href="/DetectResultHistory/" target="_blank">检测-结果-历史</a></dd>
+                <dd><a href="/FuncEmbedCode/" target="_blank">函数嵌入编码</a></dd>
+                <dd><a href="/SampleBaseAnalysis/" target="_blank">样本库分析</a></dd>
+                <dd><a href="/TensorDecompositionSV/" target="_blank">张量奇异值分解</a></dd>
+                <dd><a href="/TensorDynamicUpdate/" target="_blank">张量动态更新</a></dd>
+                <dd><a href="/ThirdPartyFuncAnalysis/" target="_blank">第三方函数分析</a></dd>
             </dl>
         </li>
 
     </ul>
     <script>
-    //注意：导航 依赖 element 模块，否则无法进行功能性操作
-    layui.use('element', function(){
-        var element = layui.element;
-        element.render();
+        //注意：导航 依赖 element 模块，否则无法进行功能性操作
+        layui.use('element', function(){
+            var element = layui.element;
+            element.render();
 
-    //…
-    });
+        //…
+        });
     </script>
+    {% block head %}{% endblock %}
     {% block body %}{% endblock %}
 	{% block script %}{% endblock %}
 </body>
