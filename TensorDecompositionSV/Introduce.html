@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{% block title %}title{% endblock %}</title>
+    <head>
+      <script src="{% static"jquery-1.8.3.min.js"%}"></script>
+      <script src="{% static"jquery.fullPage.js"%}"></script>
+      <script src="{% static"js/echarts.min.js"%}"></script>
+      <link rel="stylesheet" type="text/css" href="{% static "css/jquery.fullPage.css" %}">
+    <title>title</title>
+    <link rel="stylesheet" href="{% static "css/layui.css"%}">
+  <!--   <link rel="stylesheet" type="text/css" href="jquery.fullPage.css"> -->
+    <script src="{% static "js/layui.js" %}"></script>
+    <style>
+        .section {font-size:20px; font-weight:300; color: #000;}
+
+        .section p{display:block;
+            position:absolute;
+            text-align: center;
+            font: 50px 'Microsoft Yahei';
+            color: #000;
+            top:50%;
+            left:50%;
+            transform:translateX(-50%);
+
+        }
+        .slide h3{
+
+            text-align: center;
+            font: 50px 'Microsoft Yahei';
+
+
+        }
+    </style>
+<script>
+$(function(){
+    $('#fullpage').fullpage({
+        sectionsColor: ['white', '#4BBFC3', '#7BAABE', '#f90']
+    });
+});
+</script>
+</head>
+
+<body>
+<!-- 采用fullpage,使介绍流程更加明朗 -->
+<div id="fullpage">
+
+  <div class="section">
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;text-align:left">
+        <legend style="text-align:left;">Similarity_Detection</legend>
+    </fieldset>
+    <ul class="layui-nav" lay-filter="" style="z-index: 9999;position: relative;">
+        <li class="layui-nav-item"><a href="/main/" target="_self">首页</a></li>
+        <li class="layui-nav-item"><a href="/DetectResultHistory/DetectConfig/" target="_self">检测配置</a></li>
+        <li class="layui-nav-item"><a href="/DetectResultHistory/DetectResult/" target="_self">检测结果</a></li>
+        <li class="layui-nav-item"><a href="/DetectResultHistory/History/" target="_self">历史查询</a></li>
+        <li class="layui-nav-item">
+        <a href="javascript:;">关于我们</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <dd><a href="https://docs.qq.com/doc/DWHJJWXVmZEpDeW9R" target="_blank">系统介绍</a></dd>
+                <dd><a href="https://docs.qq.com/doc/DWHJJWXVmZEpDeW9R" target="_blank">团队介绍</a></dd>
+                <dd><a href="https://docs.qq.com/sheet/DWE1EYnVkWnpMV25Z" target="_blank">工作安排</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="https://www.layui.com/" target="_blank">张量分解</a></li>
+        <li class="layui-nav-item">
+        <a href="javascript:;">样本库分析</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <dd><a href="https://docs.qq.com/doc/DWHJJWXVmZEpDeW9R" target="_blank">第三方函数检测</a></dd>
+                <dd><a href="https://docs.qq.com/doc/DWHJJWXVmZEpDeW9R" target="_blank">增量特征更新</a></dd>
+                <dd><a href="https://docs.qq.com/sheet/DWE1EYnVkWnpMV25Z" target="_blank">...</a></dd>
+            </dl>
+        </li>
+
+    </ul>
+    <div class="layui-show" style="width: 100%;height: 660px; position:relative">
+
+
+    <p>项目介绍</p>
+
+
+
+
+
+   </div>
+   </div>
+   <div class="section" style="text-align:center"><p>STEP1</p></div>
+   <div class="section" class="InMiddle">
+        <div class="slide" style="text-align:center"><h3>STEP2i</h3></div>
+        <div class="slide" style="text-align:center"><h3>STEP2ii</h3></div>
+        <div class="slide" style="text-align:center"><h3>STEP2iii</h3></div>
+    </div>
+    <div class="section" style="text-align:center"><p>STEP3</p></div>
+    <div class="section" >
+    <p style="display:block;position:relative;text-align: center;font: 30px 'Microsoft Yahei';top:0;left:50%;transform:translateX(-50%);">
+
+            特征值范围折线图(可异步更新)
+            </p>
+
+    <div id="main" style="width: 600px;height:400px;position:relative;top:0;left:50%;transform:translateX(-50%);"></div>
+
+    </div>
+   </div>
+
+
+
+
+
+    <script type="text/javascript">
+    //本部分采用echarts画表扩展工具
+        var myChart = echarts.init(document.getElementById('main'));
+
+   //初始化先画一个空表
+        var option = {
+            title: {
+                text: '特征值范围'
+            },
+            tooltip: {},
+            legend: {
+                data:['特征值']
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [{
+                name: '特征值',
+                type: 'line',
+                data: []
+            }]
+        };
+
+//等待数据传输
+myChart.showLoading()
+
+//一有数据过来就重绘折线图,可动态更新
+$.get('data.json').done(function (data) {
+    myChart.hideLoading();
+    myChart.setOption({
+        xAxis: {
+            data: data.categories
+        },
+        series: [{
+            // 根据名字对应到相应的系列
+            name: '特征值',
+            data: data.data
+        }]
+    });
+});
+
+
+    layui.use('element', function(){
+        var element = layui.element;
+        element.render();
+
+    //…
+    });
+    </script>
+     {% block body %}{% endblock %}
+     {% block script %}{% endblock %}
+</body>
+</html>
